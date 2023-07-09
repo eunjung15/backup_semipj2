@@ -163,9 +163,13 @@
       <Context docBase="mystudy" path="/mystudy" reloadable="true" source="org.eclipse.jst.jee.server:mystudy"/>
       
       <Context docBase="herbmall" path="/herbmall" reloadable="true" source="org.eclipse.jst.jee.server:herbmall">
-	      <Resource auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" maxActive="20" maxWait="-1" name="jdbc/oracledb" password="herb123" type="javax.sql.DataSource" url="jdbc:oracle:thin:@BOOK-59EG5388I8:1521:xe" username="herb"/>    </Context>
-      
-      <Context docBase="semi2" path="/semi2" reloadable="true" source="org.eclipse.jst.jee.server:semi2"/></Host>
+	      <Resource auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" maxActive="20" maxWait="-1" name="jdbc/oracledb" password="herb123" type="javax.sql.DataSource" url="jdbc:oracle:thin:@BOOK-59EG5388I8:1521:xe" username="herb"/>    
+	      </Context>
+	      
+	  <Context docBase="EunjungWorking" path="/EunjungWorking" reloadable="true" source="org.eclipse.jst.jee.server:EunjungWorking"/>
+	  
+	  
+	  </Host>    
     </Engine>
   </Service>
 </Server>
