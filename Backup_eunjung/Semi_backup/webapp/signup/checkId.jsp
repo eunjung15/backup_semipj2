@@ -8,7 +8,6 @@
 <head>
 <jsp:useBean id="memService" class="com.member.model.MemberService" scope="session"></jsp:useBean>
 <%
-	//http://localhost:9090/herbmall/member/checkId.jsp?userid=hh
 	//register.jsp에서 open()에 의해 새창 열림, get
 	//1
 	String id=request.getParameter("id");
@@ -22,7 +21,12 @@
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-	}//if
+	}else {%>
+		<script type="text/javascript">
+		alert("중복확인할 아이디를 입력하세요");
+		location.href="<%=request.getContextPath()%>/signup/signup.jsp"; 
+	</script>
+	<%}
 	
 	//3
 	
@@ -42,7 +46,7 @@
 		});
 		
 		$('form[name=frmId]').submit(function(){
-			if($('#userid').val().length<1){
+			if($('#id').val().length<1){
 				$('.errorMessage').show();
 				event.preventDefault();
 			}
@@ -55,7 +59,7 @@
 <body>
 <h2>아이디 중복 검사</h2><br>
 <form name="frmId" method="post" action="checkId.jsp">
-	<input type="text" name="userid" id="userid" title="아이디입력" value="<%=id %>" >	
+	<input type="text" name="id" id="id" title="아이디입력" value="<%=id %>" >	
 	<input type="submit"  id="submit" value="아이디 확인">
 	<span class="errorMessage" style="display: none">아이디를 입력하세요</span>
 	

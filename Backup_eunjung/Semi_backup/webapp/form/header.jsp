@@ -23,7 +23,7 @@
 		margin: 0 auto;
 		padding: 0;
 		align-content: center;
-		background-color: white;
+		background-color: #4c599d;
 		font-family: 'Nanum Gothic', sans-serif;
 	    height: 130px;
 		
@@ -84,9 +84,8 @@
 	
 	#menu a {
     text-decoration: none;
-    color: black;
+    color: white;
    font-family: 'Nanum Gothic', sans-serif;
-       font-weight: bold;
 }
 
 	#nav_join{
@@ -130,8 +129,8 @@ a#langEng {
 	%>
 	<!-- Top page -->	
 		<div id="topImg" class="top_Img">
-			 <a href="https://www.skyscanner.co.kr/">
-			 	<img alt="로고 이미지" src="../images/logo.png" class="logoimg_top" />
+			 <a href="<%=request.getContextPath() %>/mainpage/mainpage.jsp">
+			 	<img alt="로고 이미지" src="<%=request.getContextPath() %>/images/logoWhite.png" class="logoimg_top" />
 			 </a>
 				<!-- <a href="https://www.skyscanner.co.kr/hotels">
 					<input type="button" value="🏛️EZEN MAIN" class="bt1_top"/></a> 
@@ -141,20 +140,23 @@ a#langEng {
 		 		<div id = "menu">
 			 		<div id = "nav_join">
 			 			<%if(t_isLogin){ //로그인된 경우%>
-          <a href="../Login/loout.jsp" id="langEng">Logout</a>
-          <a href="../mypage/profile.jsp" id="langKr">Mypage</a>
+          <a href="<%=request.getContextPath() %>/Login/loout.jsp" id="langEng">Logout</a>
+          <a href="<%=request.getContextPath() %>/mypage/profile.jsp" id="langKr">Mypage</a>
           <%}else{ %>
-          <a href="../Login/login.jsp" id="langEng">Login</a>
-          <a href="../signup/signup.jsp" id="langKr">Sign up</a>
+          <a href="<%=request.getContextPath() %>/Login/login.jsp" id="langEng">Login</a>
+          <a href="<%=request.getContextPath() %>/signup/signup.jsp" id="langKr">Sign up</a>
           <%} %>
 		</div>
 			 		<div id = "nav">
-			 			<a href = "../notice/noticeList.jsp">공지사항</a>
+			 			<a href = "<%=request.getContextPath() %>/notice/noticeList.jsp">공지사항</a>
 			 		</div>
 			 		<div id = "nav">
-			 			<a href = "#">호텔검색</a>
+			 			<a href = "<%=request.getContextPath() %>/hotel/hotelList.jsp">호텔검색</a>
 			 		</div>
-		 		</div>
+			 		<div id = "nav">
+                   <a href = "<%=request.getContextPath() %>/admin/memberList.jsp">회원관리</a>
+                </div>
+		</div>
 		 		
 		 		 
 		

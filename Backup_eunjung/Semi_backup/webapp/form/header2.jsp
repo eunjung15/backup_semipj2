@@ -16,14 +16,17 @@
 
 <script type="text/javascript" src="../js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
-<script type="text/javascript"></script>
+<script type="text/javascript">
+
+
+</script>
 
 	<style>
 	header {
 		margin: 0 auto;
 		padding: 0;
 		align-content: center;
-		background-color: #4c599d;
+		background-color: white;
 		font-family: 'Nanum Gothic', sans-serif;
 	    height: 130px;
 		
@@ -84,8 +87,9 @@
 	
 	#menu a {
     text-decoration: none;
-    color: white;
+    color: black;
    font-family: 'Nanum Gothic', sans-serif;
+       font-weight: bold;
 }
 
 	#nav_join{
@@ -116,21 +120,21 @@ a#langEng {
     margin-right: 20px;
 }
 	</style>
-
+<%
+String t_id=(String)session.getAttribute("id");
+boolean t_isLogin=false;
+if(t_id!=null && !t_id.isEmpty()){  //세션에 값이 있으면 로그인된 경우
+	t_isLogin=true;
+}
+%>
 
 <body>
 <header>
-<%
-		String t_id=(String)session.getAttribute("id");
-		boolean t_isLogin=false;
-		if(t_id!=null && !t_id.isEmpty()){  //세션에 값이 있으면 로그인된 경우
-			t_isLogin=true;
-		}
-	%>
+
 	<!-- Top page -->	
 		<div id="topImg" class="top_Img">
-			 <a href="https://www.skyscanner.co.kr/">
-			 	<img alt="로고 이미지" src="../images/logoWhite.png" class="logoimg_top" />
+			 <a href="<%=request.getContextPath() %>/mainpage/mainpage.jsp">
+			 	<img alt="로고 이미지" src="<%=request.getContextPath() %>/images/logo.png" class="logoimg_top" />
 			 </a>
 				<!-- <a href="https://www.skyscanner.co.kr/hotels">
 					<input type="button" value="🏛️EZEN MAIN" class="bt1_top"/></a> 
@@ -140,18 +144,18 @@ a#langEng {
 		 		<div id = "menu">
 			 		<div id = "nav_join">
 			 			<%if(t_isLogin){ //로그인된 경우%>
-          <a href="../Login/loout.jsp" id="langEng">Logout</a>
-          <a href="../mypage/profile.jsp" id="langKr">Mypage</a>
+          <a href="<%=request.getContextPath() %>/Login/logout.jsp" id="id">Logout</a>
+          <a href="<%=request.getContextPath() %>/mypage/profile.jsp" id="Mypage">Mypage</a>
           <%}else{ %>
-          <a href="../Login/login.jsp" id="langEng">Login</a>
-          <a href="../signup/signup.jsp" id="langKr">Sign up</a>
+          <a href="<%=request.getContextPath() %>/Login/login.jsp" id="id">Login</a>
+          <a href="<%=request.getContextPath() %>/signup/signup.jsp" id="Mypage">Sign up</a>
           <%} %>
 		</div>
 			 		<div id = "nav">
-			 			<a href = "../notice/noticeList.jsp">공지사항</a>
+			 			<a href = "<%=request.getContextPath() %>/notice/noticeList.jsp">공지사항</a>
 			 		</div>
 			 		<div id = "nav">
-			 			<a href = "#">호텔검색</a>
+			 			<a href = "<%=request.getContextPath() %>/hotel/hotelList.jsp">호텔검색</a>
 			 		</div>
 		 		</div>
 		 		

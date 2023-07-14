@@ -55,7 +55,7 @@ input#inputPassword2 {
       </div>
       <div class="col-auto2">
         <button type="submit" class="btn btn-primary mb-3">회원탈퇴</button>
-        <button type="reset" class="btn btn-primary mb-3">취소</button>
+        <button type="reset" class="btn btn-primary mb-3" onClick="history.back()">취소</button>
       </div>
       
 		</fieldset>	

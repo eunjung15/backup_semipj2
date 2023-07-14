@@ -1,8 +1,7 @@
 package com.member.model;
 
 import java.sql.SQLException;
-
-
+import java.util.List;
 
 /*
  jsp - dao
@@ -18,7 +17,7 @@ public class MemberService {
 	//로그인 처리 관련 상수
 	public static final int LOGIN_OK=1; //로그인 성공
 	public static final int DISAGREE_PWD=2; //비밀번호 불일치
-	public static final int NONE_ID=3;  //아이디 없음
+	public static final int NONE_ID=3;  // 없음
 
 	//관리자 로그인
 	public static final int Admin_Login=4;  //관리자로그인성공
@@ -30,16 +29,6 @@ public class MemberService {
 		memberDao=new MemberDAO();
 	}
 
-	
-	public int insertMember(MemberVO vo) throws SQLException {
-		int cnt=memberDao.insertMember(vo);
-		return cnt;
-	}
-
-	public int duplicateId(String id) throws SQLException {
-		return memberDao.duplicateId(id);
-	}
-
 	public int checkLogin(String id, String pwd) throws SQLException {
 		if(id.equals("admin") && pwd.equals("admin123")) {
 			return memberDao.AdminLogin(id, pwd);
@@ -48,15 +37,33 @@ public class MemberService {
 		}
 	}
 	
+	public int insertMember(MemberVO vo) throws SQLException {
+		return memberDao.insertMember(vo);
+	}
+	
+	public int duplicateId(String id) throws SQLException {
+		return memberDao.duplicateId(id);
+	}
+	
 	public MemberVO selectMember(String id) throws SQLException {
 		return memberDao.selectMember(id);
-	}
-
-	public int updateMember(MemberVO vo) throws SQLException {
-		return memberDao.updateMember(vo);
 	}
 	
 	public int withdrawMember(String id) throws SQLException {
 		return memberDao.withdrawMember(id);
 	}
+	
+	public int updateMember(MemberVO vo) throws SQLException {
+		return memberDao.updateMember(vo);
+	}
+	
+	public List<MemberVO> showAllMember(String keyword, String condition) throws SQLException{
+		return memberDao.showAllMember(keyword, condition);
+		
+	}
+	
+	public MemberVO selectMember(int accNo) throws SQLException {
+		return memberDao.selectMember(accNo);
+	}
+	
 }

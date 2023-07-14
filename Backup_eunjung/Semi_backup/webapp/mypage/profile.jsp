@@ -1,3 +1,4 @@
+<%@page import="com.hotel.model.hotelVO"%>
 <%@page import="com.member.model.MemberDAO"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="com.member.model.MemberVO"%>
@@ -5,20 +6,18 @@
 	pageEncoding="UTF-8"%>
 
 
-<%@include file="../mainpage/mainTop.jsp"  %>
+<%@include file="../form/header2.jsp"  %>
+
 
 <style>
-		div#wrap_profile {
-			padding: 2rem;
-			margin: 0 auto;
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			width: 900px;
-			scale: 0.85;
+		 div#infor {
+		 	
+		    width: 800px;
+		    margin: 0 auto;
+		    /* transform: translate(50%, 0%); */
+		    /* margin-bottom: 300px; */
 		}
-		
+		 
 		input#inputCity {
 			width: 385px;
 		}
@@ -77,64 +76,135 @@
 		    margin-top: 10px;
 		    margin-bottom: 10px;
 		}
-		body {
-		  overflow-x: hidden; /* Hide horizontal scrollbar */
-		  overflow-y: scroll; /* Show vertical scrollbar */
+		
+		.container{
+		    scale: 0.9;
+	        font-size: 15px;
+		} 
+		div#wrap_profile {
+		    scale: 0.8;
+		}
+		
+		button.btn.btn-primary {
+		    margin-top: 20px;
+		}
+		.col {
+		    width: 300px;
+		}
+		div#register {
+		    width: 900px;
+		}
+		div#wrap_profile {
+		    margin: 0 auto;
 		}
 </style>
 
 <script type="text/javascript" src="../js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
 <script type="text/javascript">
-	function check(){
-		if(document.fr.pwd.value == ""){
-			alert("비밀번호를 입력하세요!");
-			documet.fr.pass.focus();
-			return false;
-		}
-	}
+	
+	
+	$(function() {
+		$("#wr_submit").click(function() {			
+			if ($('#pwd').val().length < 1) {
+				alert("비밀번호를 입력하세요");
+				$('#pwd').focus();
+				return false;
+			}
+		});
+	    
+/* 	document.addEventListener('DOMContentLoaded', function() {
+	    var checkbox = document.getElementById('flexSwitchCheckDefault');
+	    var button = document.querySelector('#bt button');
+
+	    checkbox.addEventListener('change', function() {
+	      if (checkbox.checked) {
+	        button.disabled = false;
+	      } else {
+	        button.disabled = true;
+	      }
+	    });
+	  }); */
+	  
 </script>
+
 <jsp:useBean id="memService" class="com.member.model.MemberService"
 	scope="session"></jsp:useBean>
 	
 <%
-		//1
-		String id = (String) session.getAttribute("id");
+
+	//[1] 글쓰기 - list.jsp에서 [글쓰기]링크 클릭하면 get방식으로 이동
+	//[2] 글수정 - detail.jsp에서 [수정]링크 클릭하면 get방식으로 이동
+	//=> 파라미터 no가 있는 경우는 글수정
+	
+	
+	//1
+	String id=request.getParameter("id");
+	
+	  /* if(id == null){
+			response.sendRedirect("../Login/login.jsp");
+		}  */ 
+	  
+	 boolean isEdit=false;
+	String pageTitle="", btLabel="";
+	if(id!=null && !id.isEmpty()){
+		isEdit=true;  
 		
-		if(id == null){
-			response.sendRedirect("login.jsp");
-		}
-		//2
-		MemberDAO dao = new MemberDAO();
-		MemberVO vo = null;
-		try {
-			vo = memService.selectMember(id);
-		} catch (SQLException e) {
+		pageTitle="회원정보 수정";
+		btLabel="수정";
+	}else{  
+		pageTitle="정보 수정 쓰기";
+		btLabel="등록";		
+	}	
+	//2
+	//수정인 경우만 db에서 데이터 조회해서 출력해준다
+	MemberVO vo=new MemberVO();
+			System.out.println("====");
+	if(isEdit){
+		MemberDAO memberDAO = new MemberDAO();
+		try{
+			vo=memberDAO.selectMember(id);
+		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		
-		//3
-		String pwd = vo.getPwd();
-		String name = vo.getName();
-		String card = vo.getCard();
-		String email = vo.getEmail();
-		String tel = vo.getTel();
+	}
+
+	int accno = vo.getAccno();
+	String pwd = vo.getPwd();
+	String name = vo.getName();
+	String email = vo.getEmail();
+	String tel = vo.getTel();
+	String card = vo.getCard();
+	
+	
+	session.setAttribute("accno", accno);
+	/* 
+	if(id==null) id="";
+	if(pwd==null) pwd="";
+	if(name==null) name="";
+	if(email==null) email="";
+	if(card==null) card="";
+	if(tel==null) tel=""; */
+
+
 %>
 
 <selection id="profile"> <!-- 상단 띠 이미지 영역--> <!-- <div id="topImg" class="top_Img">
 		<img alt="로고 이미지" src="../image/logo.png" />
 	</div> -->
 <body>
+<form name="frm1" method="post" action="memberEdit_ok.jsp">
+<!-- <form name="frm2" method="post" action='mylist.jsp'> -->
 <div id="wrap_profile">
 
+
+	<!-- infor -->
+	<div id="infor">
 	<!-- 라인 이미지 영역-->
 	<div id="topLine" class="top_Line">
 		<img class="d-block mx-auto mb-4" src="../images/profile.png" alt=""
 			width="100" height="100"> &nbsp;
 	</div>
-
-	<!-- infor -->
-	<div id="infor">
 		<div class="accordion" id="accordion">
 			<div class="accordion-item">
 				<h2 class="accordion-header" id="headingOne">
@@ -153,50 +223,66 @@
 					</button>
 				</h2>
 
+				<input type="hidden" class="form-control" id="no" value="<%=vo.getAccno()%>">
+				
 				<div id="collapseOne" class="accordion-collapse collapse show"
 					aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-					<div class="accordion-body">
 						<body>
 							<!-- 상단 띠 이미지 영역-->
 
+					<div class="accordion-body">
 							<!-- infor -->
 							<div id="register">
 								<form class="row g-3">
-									<div class="col-md-6">
-										<label for="inputEmail4" class="form-label">아이디</label> <input
-											type="email" class="form-control" id="id"
-											placeholder="<%=vo.getId()%>">
-									</div>
-									<div class="col-md-6">
-										<label for="inputPassword4" class="form-label">비밀번호</label> <input
-											type="password" class="form-control" id="inputPassword4"
-											placeholder="<%=vo.getPwd()%>">
-									</div>
-									<div class="col-12">
-										<label for="inputAddress" class="name">이름</label> <input
-											type="text" class="form-control" id="name"
-											placeholder="<%=vo.getName()%>">
-									</div>
-									<div class="col-12">
-										<label for="inputAddress2" class="email">이메일</label> <input
-											type="text" class="form-control" id="email"
-											placeholder="<%=vo.getEmail()%>">
-									</div>
+								<div class="row">
+						  <div class="col-5">
+						    <label for="id" class="form-label"> 아이디</label>
+						    <input type="text" class="form-control" id="id" 
+						    value="<%-- <%=id %> --%>eunjung" required>
 
+						  </div>
+						
+						  <div class="col-5">
+						    <label for="password" class="form-label">비밀번호</label>
+						    <input type="password" class="form-control" id="password" 
+						    value="<%-- <%=vo.getPwd() %> --%>1234" required>
+						  </div>
+						</div><br>
+							<div id="register">
+								<form class="row g-3">
+								<div class="row">
+						  <div class="col-5">
+						    <label for="Name" class="form-label"> 이름</label>
+						    <input type="name" class="form-control" id="name" 
+						    value="<%-- <%=vo.getName() %> --%>eunjung" required>
 
-									<div class="col-md-6">
-										<label for="tel" class="form-label">연락처</label> <input
-											type="text" class="form-control" id="tel"
-											placeholder="<%=vo.getTel()%>">
-									</div>
+						  </div>
+						
+						  <div class="col-5">
+						    <label for="tel" class="form-label">이메일</label>
+						    <input type="email" class="form-control" id="email" 
+						    value="<%-- <%=vo.getEmail() %> --%>eung@ezen.com" required>
+						  </div>
+						</div><br>
+					<div id="register">
+								<form class="row g-3">
+								<div class="row">
+						  <div class="col-5">
+						    <label for="Name" class="form-label"> 연락처</label>
+						    <input type="text" class="form-control" id="hotel" 
+						    value="<%-- <%=vo.getTel() %> --%>010-0000-0000" required>
 
-									<div class="col-md-6">
-										<label for="card" class="form-label"> Credit card
-											number </label> <input type="text" class="form-control" id="card"
-											placeholder="<%=vo.getTel()%>">
-									</div>
+						  </div>
+						
+						  <div class="col-5">
+						    <label for="tel" class="form-label">Credit card</label>
+						    <input type="text" class="form-control" id="room" 
+						    value="<%-- <%=vo.getCard()%> --%>1234-868-3335" required>
+						  </div>
+						</div><br>
+					</div>
 
-									<div class="col-13 d-flex justify-content-center">
+									<div class="col-10 d-flex justify-content-center">
 										<button type="submit" class="btn btn-primary">회원정보수정</button>
 									</div>
 							</div>
@@ -220,21 +306,13 @@
 								내 예약
 							</button>
 						</h2>
-						<div id="collapseTwo" class="accordion-collapse collapse"
+						<div id="collapseTwo" class="accordion-collapse collapse" name="box222"
 							aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-							<div class="accordion-body">
-								<strong>This is the second item's accordion body.</strong> It is
-								hidden by default, until the collapse plugin adds the
-								appropriate classes that we use to style each element. These
-								classes control the overall appearance, as well as the showing
-								and hiding via CSS transitions. You can modify any of this with
-								custom CSS or overriding our default variables. It's also worth
-								noting that just about any HTML can go within the
-								<code>.accordion-body</code>
-								, though the transition does limit overflow.
-							</div>
+							 <jsp:include page="mylist.jsp" />  
 						</div>
 					</div>
+					
+					
 					<div class="accordion-item">
 						<h2 class="accordion-header" id="headingThree">
 							<button class="accordion-button collapsed" type="button"
@@ -256,7 +334,7 @@
 							<div class="accordion-body">
 
 								<div class="box12">
-								<strong>⚠️약관에 동의하시면 계정 삭제가 진행됩니다.</strong>&nbsp;
+								<strong>⚠️약관에 동의하셔야 회원 삭제가 진행됩니다.</strong>&nbsp;
 								  <select class="form-select" name="age" id="age" required>
 								 <option value="option" > --- 탈퇴 사유를 선택하여 주세요 ---</option>
 		                        <option>사용 빈도가 낮음.</option>
@@ -302,7 +380,7 @@
 									</div>
 								</div>
 								<div id="bt">
-									<a href="memberOut.jsp" onclick="window.open('memberOut.jsp','tistory','width=200, height=200, left=Math.floor((window.innerWidth - 200) / 2), top=Math.floor((window.innerHeight - 200) / 2))">
+									<a href="http://localhost:9090/testest/mypage/memberOut.jsp" >
 									<button type="button" class="btn btn-primary">
 									회원탈퇴</button></a>
 								</div>
@@ -312,12 +390,10 @@
 			</div>
 		</div>
 		<!-- wrap -->
-		</div></div>
-</body>
-</selection>
+		</div></body></selection>
+		</form><!-- </form> -->
 <!-- JavaScript Bundle with Popper -->
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 	crossorigin="anonymous"></script>
-

@@ -29,7 +29,7 @@
 		margin: 0 auto;
 		padding: 0;
 		align-content: center;
-		background-color: #4c599d;
+		background-color: #4857a5;
 	}
 	
 	div#wrap_top {
@@ -42,7 +42,7 @@
 	input.bt1_top {
 		background: white;
 		font-size: 13px;
-		border-color: #5D6DBE;
+		border-color: #4857a5;
 		height: 2rem;
 		padding: 0.3125rem 0.75rem;
 		align-items: center;
@@ -59,7 +59,7 @@
 	input.bt2_top {
 		background: white;
 		font-size: 13px;
-		border-color: #5D6DBE;
+		border-color: #4857a5;
 		height: 2rem;
 		padding: 0.3125rem 0.75rem;
 		align-items: center;

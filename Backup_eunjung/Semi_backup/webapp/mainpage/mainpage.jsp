@@ -43,7 +43,6 @@
   <script defer src="./js/index.js"></script>
 
 </head>
-
 <body>
   <!-- 로고 -->
   <div class="introLogo">
@@ -110,8 +109,8 @@
               <span>
                 <img src="./img/ind_arrow-whLong.svg" alt="흰긴화살표">
               </span>
-              <a href="./whatWeDo.html">Space business</a>
-              <img src="./img/ind_arrow-long.svg" alt="긴화살표" class="gone">
+              <a href="<%=request.getContextPath() %>/hotel/hotelList.jsp">이젠, 갈래?
+              <img src="./img/ind_arrow-long.svg" alt="긴화살표" class="gone"></a>
             </div>
           </div><!-- sec3_txt -->
         </div> <!-- container -->

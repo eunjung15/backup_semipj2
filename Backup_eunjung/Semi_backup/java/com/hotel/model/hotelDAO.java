@@ -35,8 +35,8 @@ public class hotelDAO {
 					+ " values(hotel_seq.nextval, ?,?,?,?,?,?,?,?)";
 			ps=con.prepareStatement(sql);
 			ps.setString(1, vo.getHotelName());
-			ps.setInt(2, vo.getLongitude());
-			ps.setInt(3, vo.getLatitude());
+			ps.setDouble(2, vo.getLongitude());
+			ps.setDouble(3, vo.getLatitude());
 			ps.setString(4, vo.getAddress());
 			ps.setInt(5, vo.getHotelGrade());
 			ps.setString(6, vo.getHotelDetail());
@@ -58,17 +58,8 @@ public class hotelDAO {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public List<hotelVO> selectAll(String keyword, String condition) throws SQLException{
-		/*
-		 	select * from board
-			where name like '%길%';
-			
-			select * from board
-			where title like '%안%';
-			
-			select * from board
-			where content like '%가%';
-		*/
+	public List<hotelVO> selectAll(String keyword) throws SQLException{
+		
 		Connection con=null;
 		PreparedStatement ps=null;
 		ResultSet rs=null;
@@ -81,13 +72,15 @@ public class hotelDAO {
 			String sql="select * from hotel ";
 			//검색의 경우 where 조건절 추가
 			if(keyword != null && !keyword.isEmpty()) {
-				sql+=" where "+condition+" like '%' || ? || '%'";
+				sql+="where hotelname like '%' || ? || '%' "
+					+ "or address like '%' || ? || '%' ";
 			}
 			sql += " order by hotelNo desc";
 			ps=con.prepareStatement(sql);
 
 			if(keyword != null && !keyword.isEmpty()) {
 				ps.setString(1, keyword);
+				ps.setString(2, keyword);
 			}
 			
 			//4
@@ -95,13 +88,13 @@ public class hotelDAO {
 			while(rs.next()) {
 				int hotelNo=rs.getInt("hotelNo");
 				String hotelName=rs.getString("hotelName");
-				int longitude = rs.getInt("longitude");
-				int latitude = rs.getInt("latitude");
+				double longitude = rs.getDouble("longitude");
+				double latitude = rs.getDouble("latitude");
 				String address=rs.getString("address");
 				int hotelGrade = rs.getInt("hotelGrade");
 				String hotelDetail = rs.getString("hotelDetail");
 				int adminNo = rs.getInt("adminNo");
-				String image = rs.getString("image");
+				String image = rs.getString("main_image");
 
 				hotelVO vo
 				=new hotelVO(hotelNo, hotelName, longitude, latitude, address, hotelGrade, hotelDetail, adminNo, image);
@@ -109,7 +102,7 @@ public class hotelDAO {
 				list.add(vo);
 			}
 			System.out.println("글 전체 조회 결과, list.size="+list.size()
-				+", 매개변수 keyword="+keyword+", condition="+condition);
+				+", 매개변수 keyword="+keyword);
 
 			return list;
 		}finally {
@@ -142,13 +135,13 @@ public class hotelDAO {
 			rs=ps.executeQuery();
 			if(rs.next()) {
 				String hotelName=rs.getString("hotelName");
-				int longitude = rs.getInt("longitude");
-				int latitude = rs.getInt("latitude");
+				double longitude = rs.getDouble("longitude");
+				double latitude = rs.getDouble("latitude");
 				String address=rs.getString("address");
 				int hotelGrade = rs.getInt("hotelGrade");
 				String hotelDetail = rs.getString("hotelDetail");
 				int adminNo = rs.getInt("adminNo");
-				String image = rs.getString("image");
+				String image = rs.getString("main_image");
 				
 				vo.setHotelName(hotelName);
 				vo.setLongitude(longitude);
@@ -188,8 +181,8 @@ public class hotelDAO {
 			ps = con.prepareStatement(sql);
 
 			ps.setString(1, vo.getHotelName());
-			ps.setInt(2, vo.getLongitude());
-			ps.setInt(3, vo.getLatitude());
+			ps.setDouble(2, vo.getLongitude());
+			ps.setDouble(3, vo.getLatitude());
 			ps.setString(4, vo.getAddress());
 			ps.setInt(5, vo.getHotelGrade());
 			ps.setString(6, vo.getHotelDetail());

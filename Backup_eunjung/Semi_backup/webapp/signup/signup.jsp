@@ -127,7 +127,7 @@ pageEncoding="UTF-8"%>
 <main>
     <div class="py-5 text-center">
         <form name="frm1" method="post" action="signup_ok.jsp">
-            <img class="d-block mx-auto mb-4" src="../images/signup.png" alt="" width="100" height="100">
+            <img class="d-block mx-auto mb-4" src="<%=request.getContextPath() %>/images/signup.png" alt="" width="100" height="100">
             <h2>회원 가입</h2>
             <p class="lead"> 회원가입을 환영합니다.
                 <br>해당되는 정보값을 입력해주세요.
@@ -149,9 +149,9 @@ pageEncoding="UTF-8"%>
 
                 <div class="col-12">
                     <label for="pwd" class="form-label">비밀번호</label>
-                    <input type="pwd" class="form-control" id="pwd" name="pwd" required>
+                    <input type="password" class="form-control" id="pwd" name="pwd" required>
                     <div class="invalid-feedback">
-                        Please enter your shipping address.
+                       비밀번호를 입력하세요.
                     </div>
                 </div>
 
@@ -160,7 +160,7 @@ pageEncoding="UTF-8"%>
                     <input type="text" class="form-control" id="name" name="name" placeholder="홍길동" required>
                     <div class="invalid-feedback">
                         <div class="invalid-feedback">
-                            Valid first name is required.
+                            이름을 입력해주세요
                         </div>
                     </div>
                 </div>

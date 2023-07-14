@@ -16,7 +16,7 @@
 	if(l_id==null || l_id.isEmpty()){ %>
 		<script type="text/javascript">
 			alert("먼저 로그인하세요");
-			location.href="<%=ctxPath%>/login/login.jsp"; //절대참조
+			location.href="<%=ctxPath%>/Login/login.jsp"; //절대참조
 		</script>
 		
 	<%	return;

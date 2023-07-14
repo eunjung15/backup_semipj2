@@ -1,8 +1,9 @@
+<%@page import="com.member.model.MemberService"%>
+<%@page import="com.member.model.MemberVO"%>
 <%@page import="java.sql.SQLException"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<%-- <%@ include file="../loginCheck.jsp" %>--%>    
+<%@ include file="../Login/loginCheck.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,46 +15,27 @@
 <%
    request.setCharacterEncoding("utf-8");
 
+	String accno=request.getParameter("accno");
    String id=(String)session.getAttribute("id");
    String pwd=request.getParameter("pwd");
-   String zipcode=request.getParameter("tel");
-   String address=request.getParameter("address");
-   String addressDetail=request.getParameter("addressDetail");
-   String hp1=request.getParameter("hp1");
-   String hp2=request.getParameter("hp2");
-   String hp3=request.getParameter("hp3");
-   String email1=request.getParameter("email1");
-   String email2=request.getParameter("email2");
-   String email3=request.getParameter("email3");
+   String name=request.getParameter("name");
+   String email=request.getParameter("email");
+   String tel=request.getParameter("tel");
+   String card=request.getParameter("card");
    
-   String hp="";
-   String email="";
-   
-   if(hp2!=null && !hp2.isEmpty() && hp3!=null && !hp3.isEmpty()){
-	  hp=hp1+"-"+hp2+"-"+hp3;
-   }
-   
-   if(email1!=null && !email1.isEmpty()){
-      if(email2.equals("etc")){
-         if(email3!=null && !email3.isEmpty()){
-            email=email1+"@"+email3;
-         }
-      }else{
-         email=email1+"@"+email2;
-      }
-   }
    
    MemberVO memVo = new MemberVO();
-   memVo.setUserid(userid);
-   memVo.setZipcode(zipcode);
-   memVo.setAddress(address);
-   memVo.setAddressDetail(addressDetail);
+   memVo.setAccno(Integer.parseInt(accno));
+   memVo.setId(id);
+   memVo.setPwd(pwd);
+   memVo.setName(name);
    memVo.setEmail(email);
-   memVo.setHp(hp);
+   memVo.setTel(tel);
+   memVo.setCard(card);
    
    String msg="수정 실패",url="memberEdit.jsp";
    try{
-	   int result=memService.checkLogin(userid, pwd);
+	   int result=memService.checkLogin(id, pwd);
 	   
 	   if(result==MemberService.LOGIN_OK){
 	      int cnt=memService.updateMember(memVo);

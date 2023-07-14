@@ -58,25 +58,27 @@
 .row a:hover{
 	text-decoration:underline;
 }
+
+
 </style>
 
 <footer id="foot">
 	<div class="row">
 		<div class="col" id="div1">
 			<h5>이젠, 갈래?</h5>
-			<a href="#">회사소개</a><br> 
+			<a href="<%=request.getContextPath() %>/mainpage/mainpage.js">회사소개</a><br> 
 			<a href="#">사업자 정보 확인</a><br>
 		</div>
 		<div class="col" id="div2">
 			<h5>정책 사항</h5>
 			<a href="../footer/cookiePolicy.jsp">쿠키정책</a><br> 
 			<a href="../footer/infomationCheck.jsp">개인정보처리방침</a><br> 
-			<a href="#">서비스 약관</a><br>
+			<a href="../footer/term_of_Service.jsp">서비스 약관</a><br>
 		</div>
 		<div class="col" id="div3">
 			<h5>도움말</h5>
-			<a href="#">개인정보 설정</a><br> 
-			<a href="#">로그인</a><br>
+			<a href="../footer/personInfo.jsp">개인정보 설정</a><br> 
+			<a href="../Login/login.jsp">로그인</a><br>
 		</div>
 		<div class="col" id="div4">
 			<h5>contact us</h5>

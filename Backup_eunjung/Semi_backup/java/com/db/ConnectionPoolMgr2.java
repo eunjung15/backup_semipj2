@@ -28,7 +28,7 @@ public class ConnectionPoolMgr2 {
 		Connection con=ds.getConnection();
 		//=> Connection Pool에서 커넥션을 빌려온다
 		
-		System.out.println("db연결 여부, con="+con);
+		System.out.println("dbcp- db연결 여부, con="+con);
 		return con;
 	}
 	
@@ -46,7 +46,6 @@ public class ConnectionPoolMgr2 {
 	}
 
 }
-
 
 
 

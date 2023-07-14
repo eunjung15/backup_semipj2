@@ -1,3 +1,4 @@
+<%@page import="java.io.Console"%>
 <%@page import="com.member.model.MemberService"%>
 <%@page import="java.sql.SQLException"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -13,7 +14,7 @@
 <%
 	//1
 	request.setCharacterEncoding("utf-8");
-
+	String accno = request.getParameter("accno");
 	String id = request.getParameter("id");
 	String pwd = request.getParameter("pwd");
 	String chkSave = request.getParameter("chkSave");
@@ -27,7 +28,7 @@
 		if(result==MemberService.LOGIN_OK){
 			//[1] 세션에 로그인 정보 저장
 			session.setAttribute("id", id);
-			
+			session.setAttribute("accno", accno);
 			//[2] 저장 체크시 쿠키에 저장 
 			//아이디 저장하기가 체크된 경우 on, null on을 넣을 경우 nullpointex~ 오류
 			if(chkSave != null){ //체크한 경우
@@ -43,7 +44,7 @@
 			}
 			
 			msg=id+"님 로그인 되었습니다.";
-			url="../mainpage/mainpage.jsp";
+			url="../mypage/profile.jsp";
 		}else if(result==MemberService.DISAGREE_PWD){
 			msg="비밀번호가 일치하지 않습니다.";
 		}else if(result==MemberService.NONE_ID){
@@ -58,7 +59,7 @@
 		request.setAttribute("msg", msg);
 		request.setAttribute("url", url);
 %>
-<jsp:forward page="../mainpage/mainpage.jsp"></jsp:forward>
+ <jsp:forward page="message.jsp"></jsp:forward>
 <!-- forward: request 공유  -->
 </body>
 </html>

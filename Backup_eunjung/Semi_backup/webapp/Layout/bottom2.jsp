@@ -13,14 +13,14 @@
 					<a href = "#">광고제휴문의</a><br>
 					<a href = "#">사업자 정보 확인</a><br>
 				</div>
-				
+
 				<div class="col2">
 					<a href="../footer/cookiePolicy.jsp">쿠키정책</a><br> 
 					<a href="#">서비스 약관</a><br> 
 					<a href="#">위치정보 약관</a><br>
 					<a href= "#">청소년 보호 정책</a>
 				</div>
-				
+
 				<div class = "col3">
 					<a href="#">도움말</a><br> 
 					<a href="#">개인정보 설정</a><br> 
@@ -29,7 +29,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div id="footer02">
 			<span>
 				<br>전국 호텔을 편리하게 비교하고 예약하세요 <br>Ltd 2002 – 2023
@@ -44,5 +44,6 @@
 		</div>
 	</div>
 </footer>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

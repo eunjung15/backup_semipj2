@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.db.ConnectionPoolMgr2;
 
@@ -114,14 +116,18 @@ public class MemberDAO {
 			con=pool.getConnection();
 
 			//3
-			String sql = "insert into member(no, id,name,pwd,age,email,tel)"
-					+ " values(member_seq.nextval, ?, ?, ?, ?, ?, ?)";
+			////////////////////////
+			String sql = "insert into member(accno, id,name,pwd,age,email,tel,card)"
+					+ " values(member_seq.nextval, ?, ?, ?, ?, ?, ?,?)";
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, vo.getId());
 			ps.setString(2, vo.getName());
 			ps.setString(3, vo.getPwd());
-			ps.setString(4, vo.getEmail());
+			ps.setString(4, vo.getAge());
+			ps.setString(5, vo.getEmail());
+			ps.setString(6, vo.getTel());
+			ps.setString(7, vo.getCard());
 
 			//4
 			int cnt = ps.executeUpdate();
@@ -149,7 +155,7 @@ public class MemberDAO {
 			con=pool.getConnection();
 
 			//3
-			String sql="select count(*) from member where memberid=?";
+			String sql="select count(*) from member where id=?";
 			ps=con.prepareStatement(sql);
 			ps.setString(1, id);
 
@@ -175,8 +181,13 @@ public class MemberDAO {
 	}
 
 	
-
-	public MemberVO selectMember(String userid) throws SQLException {
+/**
+ * 회원정보출력
+ * @param id
+ * @return
+ * @throws SQLException
+ */
+	public MemberVO selectMember(String id) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -187,33 +198,79 @@ public class MemberDAO {
 
 			String sql = "select * from member where id = ?";
 			ps = con.prepareStatement(sql);
-			ps.setString(1, userid);
+			ps.setString(1, id);
 
 			rs = ps.executeQuery();
 			if(rs.next()) {            
-				int accno = rs.getInt("accno");
-				String name = rs.getString("name");
-				String pwd = rs.getString("pwd");
-				int age = rs.getInt("age");
-				String email = rs.getString("email");
-				int tel = rs.getInt("tel");
-				int point = rs.getInt("point");
+				 int accno = rs.getInt("accno");
+		         String pwd = rs.getString("pwd");
+		         String name = rs.getString("name");
+		         String email = rs.getString("email");
+		         String tel = rs.getString("tel");
+		         String card = rs.getString("card");
 
-				vo.setAccno(accno);
-				vo.setName(name);
-				vo.setPwd(pwd);
-				vo.setEmail(email);
-				vo.set(tel); 
-				vo.setPoint(point);
+		         vo.setAccno(accno);
+		         vo.setPwd(pwd);
+		         vo.setName(name);
+		         vo.setEmail(email);
+		         vo.setTel(tel); 
+		         vo.setCard(card); 
 			}
-			System.out.println("회원정보 검색결과: " + vo + ", 매개변수 userid: " + userid);
+			System.out.println("회원정보 검색결과: " + vo + ", 매개변수 id: " + id);
 
 			return vo;
 		} finally {
 			pool.dbClose(rs, ps, con);
 		}
 	}
+	
+	/**
+	 * 회원정보출력
+	 * @param accNo
+	 * @return
+	 * @throws SQLException
+	 */
+		public MemberVO selectMember(int accNo) throws SQLException {
+			Connection con = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
 
+			MemberVO vo = new MemberVO();
+			try {
+				con = pool.getConnection();
+
+				String sql = "select * from member where accNo = ?";
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, accNo);
+
+				rs = ps.executeQuery();
+				if(rs.next()) {            
+					String name = rs.getString("name");
+					String pwd = rs.getString("pwd");
+					String age = rs.getString("age");
+					String email = rs.getString("email");
+					String tel = rs.getString("tel");
+
+					vo.setName(name);
+					vo.setPwd(pwd);
+					vo.setAge(age);
+					vo.setEmail(email);
+					vo.setTel(tel); 
+				}
+				System.out.println("회원정보 검색결과: " + vo + ", 매개변수 accNo: " + accNo);
+
+				return vo;
+			} finally {
+				pool.dbClose(rs, ps, con);
+			}
+		}
+
+	/**
+	 * 회원정보수정
+	 * @param vo
+	 * @return
+	 * @throws SQLException
+	 */
 	public int updateMember(MemberVO vo) throws SQLException {
 		Connection con=null;
 		PreparedStatement ps =null;
@@ -222,15 +279,16 @@ public class MemberDAO {
 			con=pool.getConnection();
 
 			String sql="update member"
-					+ " set name=?, pwd=?, age=?, tel=?,email=?"
+					+ " set id=?, pwd=?, name=?, email=?, tel=?, card=?"
 					+ " where id=?";
 			ps=con.prepareStatement(sql);
 
-			ps.setString(1, vo.getName());
+			ps.setString(1, vo.getId());
 			ps.setString(2, vo.getPwd());
-			ps.setString(3, vo.getAge());
-			ps.setInt(4, vo.getTel());
-			ps.setString(5, vo.getEmail());
+			ps.setString(3, vo.getName());
+			ps.setString(4, vo.getEmail());
+			ps.setString(5, vo.getTel());
+			ps.setString(7, vo.getCard());
 
 			int cnt=ps.executeUpdate();
 
@@ -242,21 +300,27 @@ public class MemberDAO {
 		}
 	}
 
-	public int withdrawMember(String userid) throws SQLException {
+	/**
+	 * 회원탈퇴
+	 * @param userid
+	 * @return
+	 * @throws SQLException
+	 */
+	public int withdrawMember(String pwd) throws SQLException {
 		Connection con=null;
 		PreparedStatement ps =null;
 
 		try {
 			con=pool.getConnection();
 
-			String sql="update member set outdate=sysdate where userid=?";
+			String sql="update member set outdate=sysdate where pwd=?";
 			ps=con.prepareStatement(sql);
 
-			ps.setString(1, userid);
+			ps.setString(1, pwd);
 
 			int cnt=ps.executeUpdate();
 
-			System.out.println("회원 탈퇴 결과 cnt="+cnt+", 매개변수 userid="+userid);
+			System.out.println("회원 탈퇴 결과 cnt="+cnt+", 매개변수 id="+pwd);
 			return cnt;
 
 		}finally {
@@ -271,23 +335,23 @@ public class MemberDAO {
 	 * @param member_phone
 	 * @return
 	 */
-	public String findId(String member_name, String member_phone) {
+	public String findId(String name, String tel) {
 		String mid = null;
 		Connection con=null;
 		PreparedStatement ps =null;
 		ResultSet rs = null;
 		
 		try {
-			String sql = "select member_mid from members "
-					+ "where member_name=? and member_phone=? ";
+			String sql = "select id from members "
+					+ "where name=? and tel=? ";
 			ps = con.prepareStatement(sql);
-			ps.setString(1, member_name);
-			ps.setString(2, member_phone);
+			ps.setString(1, name);
+			ps.setString(2, tel);
 			
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				mid = rs.getString("member_mid");
+				mid = rs.getString("id");
 			}
 				
 		} catch (Exception e) {
@@ -296,8 +360,82 @@ public class MemberDAO {
 		return mid;
 	}
 	
+	/**
+	 * 비밀번호찾기
+	 * @param id
+	 * @param tel
+	 * @return
+	 */
+	public String findpwd(String id, String tel) {
+		String mid = null;
+		Connection con=null;
+		PreparedStatement ps =null;
+		ResultSet rs = null;
+		
+		try {
+			String sql = "select pwd from members "
+					+ "where id=? and tel=? ";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.setString(2, tel);
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				mid = rs.getString("pwd");
+			}
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mid;
+	}
 	
-
+	public List<MemberVO> showAllMember(String keyword, String condition) throws SQLException{
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<MemberVO> list = new ArrayList<>();
+		
+		con = pool.getConnection();
+		
+		try {
+			String sql = "SELECT * FROM MEMBER ";
+			if(keyword!=null && !keyword.isEmpty()) {
+				sql += " WHERE " + condition + " LIKE '%' || ? || '%'";
+			}
+			sql += " ORDER BY REGDATE DESC";
+			ps = con.prepareStatement(sql);
+			
+			if(keyword!=null && !keyword.isEmpty()) {
+				ps.setString(1,  keyword);
+			}
+			
+			rs=ps.executeQuery();
+			while(rs.next()) {
+				
+				
+				int accNo = rs.getInt("accno");
+				String id = rs.getString("id");
+				String name = rs.getString("name");
+				String pwd = rs.getString("pwd");
+				String age = rs.getString("age");
+				String email = rs.getString("email");
+				String tel = rs.getString("tel");
+				Timestamp regdate = rs.getTimestamp("regdate");
+				Timestamp outdate = rs.getTimestamp("outdate");
+				String card = rs.getString("card");
+				
+				MemberVO vo = new MemberVO(accNo, id, name, pwd, age, email, tel, regdate, outdate, card);
+				
+				list.add(vo);
+				System.out.println("조회 회원 결과, list.size = " + list.size() + ", 매개변수 keyword = " + keyword + ", condition = " + condition);
+			}
+			return list;
+		}finally {
+			pool.dbClose(rs, ps, con);
+		}
+	}
 }
 
 

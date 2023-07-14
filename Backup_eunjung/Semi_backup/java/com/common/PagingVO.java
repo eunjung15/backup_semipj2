@@ -4,8 +4,9 @@ public class PagingVO {
 	private int currentPage; //현재페이지
 	private int totalRecord; //총 레코드수 17
 	private int pageSize; //페이지당 보여질 레코드수 5
-	private int totalPage; //총 페이지수 4
 	private int blockSize; //블럭당 보여질 페이지 수 10
+	
+	private int totalPage; //총 페이지수 4
 	private int firstPage; //블럭당 시작페이지 1,11,21,31...
 	private int lastPage; //블럭당 마지막 페이지 10,20,30,40....
 	private int curPos; //페이지당 시작 인덱스(list 내에서)

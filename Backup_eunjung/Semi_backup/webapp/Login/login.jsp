@@ -113,7 +113,7 @@
 #loginTitle {
 	margin-top: 30px;
 	text-shadow: 3px 1px 2px #666eb8;
-	color: #4E266D; /* login 색깔*/
+	color: #4857A5; /* login 색깔*/
 	font-size: 50px;
 	font-weight: bold;
     display: block;
@@ -125,9 +125,9 @@
 	width: 80px;
 	height: 80px;
 	text-align: center;
-	background-color: #4E266D;
+	background-color: #4857A5;
 	color: white;
-	border: 1px solid #4e266d;
+	border: 1px solid #4857A5;
 	margin-left: 60px;
 	font-size: small;
 	font-weight: bold;
@@ -136,14 +136,14 @@
 input#button {
 	border-radius: 1rem;
 	font-weight: 700;
-	box-shadow: inset 0 0 0 1px #5D6DBE;
+	box-shadow: inset 0 0 0 1px #4857A5;
 	margin-bottom: 40px;
 }
 
 
 #submit:hover { /*로그인 버튼 오버*/
 	background-color: white;
-	color: #4E266D;
+	color: #4857A5;
 	cursor: pointer;
 }
 
@@ -152,23 +152,23 @@ input#button {
 	width: 140px;
 	height: 30px;
 	background-color: white;
-	color: #4E266D;
-	border: 1px solid #4e266d;
+	color: #4857A5;
+	border: 1px solid #4857A5;
 }
 
 #bottomBtn:hover { /*하단 버튼 오버*/
 	width: 140px;
 	height: 30px;
-	background-color: #4E266D;
+	background-color: #4857A5;
 	color: white;
-	border: 1px solid #4e266d;
+	border: 1px solid #4857A5;
 	cursor: pointer;
 }
 
 #mainLine {
 	width: 700px;
 	height: 40px;
-	border-bottom: 1px solid #4e266d;
+	border-bottom: 1px solid #4857A5;
 }
 </style>
 
@@ -195,7 +195,7 @@ input#button {
 					<span>비밀번호</span>
 				</div>
 				<div style="float: left;" id="inputText">
-					<input type="text" name="pwd" id="pwd">
+					<input type="password" name="pwd" id="pwd" >
 				</div>
 				<div style="clear: both; float: left;" id="leftText"></div>
 				<div style="float: left;" id="securityText">
@@ -207,7 +207,7 @@ input#button {
 			</div>
 			<div id="mainLine" style="clear: both;"></div>
 			<div id="main">
-				<a href="#" onclick="window.open('../Login/find_id.jsp','tistory','width=200, height=200, left: calc(50% -291px), top:100px')"><input id="bottomBtn" type="button" value="아이디 찾기"/></a>
+				<a href="#" onclick="window.open('../Login/find_id.jsp','tistory','width=200, height=200')"><input id="bottomBtn" type="button" value="아이디 찾기"/></a>
 				<a href="#" onclick="window.open('../Login/find_pwd.jsp','tistory','width=200, height=200')"><input id="bottomBtn" type="button" value="비밀번호 찾기" /></a> 
 				<a href="../signup/signup.jsp"><input id="bottomBtn" type="button" value="회원가입" /></a>
 			</div>
