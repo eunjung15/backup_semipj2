@@ -1,0 +1,197 @@
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    private String connectPath = "/imagePath/**";
+    private String resourcePath = "file:///home/uploadedImage";
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(connectPath)
+                .addResourceLocations(resourcePath);
+    }
+}
+WebConfig.class
+ 
+
+ 
+
+WebMvcConfigurer interface를 상속받아 addResourceHandlers method를 오버 라이딩하고 리소스 등록 및 핸들러를 관리하는 객체인 ResourceHandlerRegistry를 통해 리소스의 위치와 리소스와 매칭 될 url을 설정합니다.
+
+ 
+
+addResourceHandler : 리소스와 연결될 URL path를 지정합니다. (클라이언트가 파일에 접근하기 위해 요청하는 url)
+localhost:8080/imagePath/** 
+
+addResourceLocations: 실제 리소스가 존재하는 외부 경로를 지정합니다.
+경로의 마지막은 반드시 " / "로 끝나야 하고, 로컬 디스크 경로일 경우 file:/// 접두어를 꼭 붙여야 합니다.
+ 
+
+이렇게 설정하면 클라이언트로부터 http://호스트 주소:포트/imagePath/testImage.jpg 와 같은 요청이 들어 왔을 때 /home/uploadedImage/testImage.jpg 파일로 연결됩니다.
+
+ 
+
+ 
+
+ 
+
+ 
+
+* connectPath, resourcePath
+
+의 경우 예시를 위해 class 내부에 바로 선언했지만 실제 개발에서는 .properties 또는 .yml을 통해 개발 환경에 따른 경로를 작성하고 주입받아서 사용하는 것이 좋습니다.
+
+
+
+https://wildeveloperetrain.tistory.com/41
+
+----------------
+
+ https://eoghks0521.tistory.com/entry/Spring-%EC%84%9C%EB%B2%84%EC%9D%98-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C-%EA%B2%BD%EB%A1%9C-%EC%84%A4%EC%A0%95-%EC%98%A4%EB%A5%98
+
+--------------
+실서버에서 배포하여 실행중인 웹 애플리케이션 상에서, 웹 사이트에 접속하여 파일 및 이미지 업로드를 실시할때, 이미지 업로드 경로를  웹 애플리케이션 내부로 설정할 경우
+(예를 들면 웹애플리케이션 정적 파일 저장 위치(css, js, img 폴더가 위치하는 곳) 내부)
+새로 웹 애플리케이션을 배포할시, 실행중에 추가했던 이미지 파일들이 없어지는 현상이 발생합니다.
+웹 애플리케이션 상에서 별도로 추가하는 이미지 파일은 웹 애플리케이션 내부에 위치한 정적폴더 위치가 아닌, 별도의 공간에 저장되도록 설정해야 합니다.
+이번 포스팅에서는 spring boot 기반의 웹 애플리케이션 서버 실행 중 저장되는 이미지 파일을 특정 폴더 경로에 저장되도록 설정하는 방법을 알아봅니다.
+
+그러기 위해서 필요한 것은?
+
+
+profile별(local, staging, prod 등...) 이미지 파일 저장 위치를 property파일에 설정하기
+이미지 파일 저장시, property에 설정한 path를 불러들여서 해당위치에 저장하기
+저장한 이미지 파일을 url을 통해 열어볼 수 있도록 하기 위해, url pattern 과 리소스 위치를 연결하기
+
+
+1. 경로 설정 (yaml)
+
+yml또는 properties 파일에 이미지파일을 저장할 폴더 경로를 설정합니다.
+각 환경별로 이미지 업로드 경로가 다를 수 있기 때문에, class 파일에 직접 작성하는 것 보다, 프로퍼티에 작성 한후, 주입받는 방식으로 하는 것이 좋습니다.
+custom:
+  path:
+    upload-images: '/var/lib/jenkins/area_deploy/jiniworld/upload-images/'
+
+2. Url과 Resource 연결하기
+
+WebMvcConfigurerAdapter 를 상속받은 Config 파일에 url과 리소스 연결한다.
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+  private final String uploadImagesPath;
+
+  public WebConfig(@Value("${custom.path.upload-images}") String uploadImagesPath) {
+    this.uploadImagesPath = uploadImagesPath;
+  }
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("swagger-ui.html")
+      .addResourceLocations("classpath:/META-INF/resources/");
+
+    List<String> imageFolders = Arrays.asList("email", "etc");
+    for(String imageFolder : imageFolders) {
+      registry.addResourceHandler("/static/img/" +imageFolder +"/**")
+        .addResourceLocations("file:///" + uploadImagesPath + imageFolder +"/")
+        .setCachePeriod(3600)
+        .resourceChain(true)
+        .addResolver(new PathResourceResolver());
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ln 1 : @Configuration 애너테이션을 붙여 이 class 파일이 구성 파일임을 선언합니다.
+ln 6 : @Value 를 통해 application.yml 에 설정한 이미지업로드 경로에 관한 프로퍼티 값을 가져옵니다.
+ln 17-18 : addResourceLocations에 url 경로를 설정하고, addResourceLocations에 매핑될 리소스 위치를 설정합니다. (경로 앞에 file:/// 을 반드시 붙여줘야 합니다.)
+http://호스트주소:포트/static/img/email/title.png → file:////var/lib/jenkins/area_deploy/jiniworld/upload-images/email/title.png
+즉, /static/img/email/ 나, /static/img/etc/ 로 시작되는 url pattern 은 일반적인 정적파일 경로가 아닌 우리가 별도로 설정한 파일 업로드 경로인 /var/lib/jenkins/area_deploy/jiniworld/upload-images/ 폴더 내에 있는 리소스를 가리키도록 하는 것입니다.
+
+제 프로젝트의 정적 파일 위치는 아래와 같습니다.
+
+기본 이미지 정적 파일의 저장 경로는 classpath:/static/img 이며,
+http://api.jiniworld.me/static/img/like.png 와 같은 형태로 접근할 수 있습니다.
+
+
+직접 설정한 이미지 파일 업로드 경로/email 에 저장한 title.png 파일도 같은 url 패턴으로 접근할 수 있습니다.
+http://api.jiniworld.me/static/img/email/title.png
+
+만일, /static/img/email, /static/img/etc 외에 다른 폴더도 정의하고 싶다면 ln 15에 더 추가하면 됩니다.
+경로를 계속해서 추가하고 싶지 않다면 /static/img/res/를 추가하고, email이나 etc와 같은 폴더를 res 하위에 위치시켜도됩니다.
+
+++ 키워드
+
+
+spring boot에서 이미지파일 경로 외부에 설정하기
+이미지파일 경로 웹 애플리케이션 외부에 설정하기
+리소스 경로 yml 에 정의하기
+property에 파일업로드 경로 설정
+addResourceLocations
+출처: https://blog.jiniworld.me/28 
+
+[hello jiniworld:티스토리]
+
+
+--------------
+https://goodteacher.tistory.com/468
+
+-----------
+https://blog.naver.com/PostView.nhn?blogId=didrh31&logNo=222295575065&categoryNo=0&parentCategoryNo=0&viewDate=&currentPage=1&postListTopCurrentPage=1&from=postView
+
+
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+addResourceHandlers
+addResourceHandler("/imageUpload/**").addResourceLocations("file:///home/");
+
+ 
+
+실제 프로젝트를 배포한 linux 서버에서 다음과 같이 설정하여 이미지를 불러오는 모습입니다.
+
+

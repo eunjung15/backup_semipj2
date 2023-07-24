@@ -1,0 +1,76 @@
+	@Transactional
+	public int insertOrder(OrderVO orderVo) {
+		int cnt=0;
+		try {
+			cnt=orderDao.insertOrder(orderVo);	
+			System.out.println("1. order insert, cnt="+cnt);
+			
+			cnt = orderDao.insertOrderDetail(orderVo);
+			System.out.println("2. orderDetail insert, cnt="+cnt);
+	
+			cnt = cartDao.deleteCartByUserid(orderVo.getCustomerId());
+			System.out.println("3. cart delete, cnt="+cnt);
+		
+		}catch(RuntimeException e) {
+			System.out.println("트랜잭션 에러, e="+e);
+			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+		return cnt;
+	}
+
+
+------------------
+
+
+ 만약 저장되지 않았을때 상태코드를 500(익셉션 발생)을 내보내고 싶다면 어떻게 해야할까요?
+@Transactional
+public int saveArticle(String title, String content) {
+	try {
+		// 게시글등록 테이블에 데이터를 저장합니다.
+		articleDao.setArticle(title, content);
+		// 최신글 테이블에 데이터를 저장합니다.
+		newArticleDao.setNewArticle(title, content);
+
+		//상태코드 200은 처리완료를 나타냅니다.
+		return 200;
+	} catch(Exception e) {
+		e.printStackTrace();
+		return 500;
+	}
+}
+위와같이 코딩할수 있습니다.  하지만 이때는 익셉션이 발생하면 try catch로 처리되기 때문에
+ 익셉션이 메소드 밖으로 throw되지 않아 트랜잭션이 실행되지 않습니다. 
+즉 articleDao.setArticle(title, content); 가 저장되고 난 뒤 newArticleDao.setNewArticle(title, content); 에서 
+에러가 나면 articleDao.setArticle(title, content);로 저장된 글이 롤백이 되지 않아 
+article에는 저장되고 newArticle에는 저장이 되지 않게 됩니다. 
+
+이때는 Spring Framework의 TransactionAspectSupport 클래스를 통해 rollback을 수동으로 작업해 주면됩니다.
+TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+public int saveArticle(String title, String content) {
+	try {
+		// 게시글등록 테이블에 데이터를 저장합니다.
+		articleDao.setArticle(title, content);
+		// 최신글 테이블에 데이터를 저장합니다.
+		newArticleDao.setNewArticle(title, content);
+
+		//상태코드 200은 처리완료를 나타냅니다.
+		return 200;
+	} catch(Exception e) {
+		e.printStackTrace();
+  	        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		return 500;
+	}
+}
+이렇게 작성해 주면 익셉션 발생시 해당메소드를 rollback 시킬수 있게 됩니다. 
+참고로 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly() 가 실행될때 
+바로 rollback이 진행되지는 않습니다. setRollbackOnly 메소드는 속성만 변경을 하는 것이기 때문에 
+실제 rollback이 일어나는 시점은 commit이 되기 직전에 수행되게 됩니다.
+
+출처 : https://krespo.net/159
+
+
+
+
+
