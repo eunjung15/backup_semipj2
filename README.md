@@ -25,28 +25,6 @@
 <div align="center"><img src="https://github.com/eunjung15/backup_semipj2/assets/120345380/f250129e-fc13-4337-bdbd-903a07ed025b"></div>
 <br>
 
-
-## 🛠 라이브러리
-
 ## 👨‍👩‍👧‍👦 팀원소개 및 업무분담
 <div align="center"><img src="https://github.com/eunjung15/backup_semipj2/assets/120345380/0cf34ae2-8fae-4a09-9cdb-473144c139b6"></div>
 <br>
-
-
-## ✴️ 주요 페이지 소개
-    
-    1. 사용자
-       1-1 메인페이지
-       1-2 이용약관
-       
-    3. 호스트
-       2-1 메인페이지
-    
-    4. 관리자
-       3-1 메인페이지
-<br>
-<div align="center">
-<kbd><img src="https://github.com/JOSiroo/spaceCollection/assets/124752869/099a6692-8b6e-4811-a217-266232eada23" alt="대체 텍스트" style="border: 20px solid black;"></kbd>
-</div>
-
-
