@@ -30,8 +30,9 @@
 <br>
 
 
-https://github.com/eunjung15/backup_semipj2/assets/135147602/926c2d6c-ff96-437c-8075-ac7fe6a07657
 
+
+https://github.com/eunjung15/backup_semipj2/assets/135147602/4055f39a-caf1-4ff5-a64f-bcbbd2cabd53
 
 
 
