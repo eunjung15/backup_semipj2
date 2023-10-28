@@ -29,6 +29,13 @@
 <div align="center"><img src="https://github.com/eunjung15/backup_semipj2/assets/120345380/0cf34ae2-8fae-4a09-9cdb-473144c139b6"></div>
 <br>
 
+https://github.com/eunjung15/backup_semipj2/assets/135147602/6f67108a-be35-47ca-a7b0-3e8ccbc6d51d
+
+
+
+
+
+https://github.com/eunjung15/backup_semipj2/assets/135147602/df890e98-cb2a-46d7-8808-9f6d2636bcb9
 
 
 
@@ -40,12 +47,5 @@ https://github.com/eunjung15/backup_semipj2/assets/135147602/4055f39a-caf1-4ff5-
 <p>- 쿠폰 발급시 자동 저장되어 마이쿠폰함에 조회 가능
 
 
-https://github.com/eunjung15/backup_semipj2/assets/135147602/6f67108a-be35-47ca-a7b0-3e8ccbc6d51d
-
-
-
-
-
-https://github.com/eunjung15/backup_semipj2/assets/135147602/df890e98-cb2a-46d7-8808-9f6d2636bcb9
 
 
