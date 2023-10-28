@@ -28,3 +28,10 @@
 ## 👨‍👩‍👧‍👦 팀원소개 및 업무분담
 <div align="center"><img src="https://github.com/eunjung15/backup_semipj2/assets/120345380/0cf34ae2-8fae-4a09-9cdb-473144c139b6"></div>
 <br>
+
+
+https://github.com/eunjung15/backup_semipj2/assets/135147602/926c2d6c-ff96-437c-8075-ac7fe6a07657
+
+
+
+
