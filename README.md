@@ -25,8 +25,9 @@
 <div align="center"><img src="https://github.com/eunjung15/backup_semipj2/assets/120345380/f250129e-fc13-4337-bdbd-903a07ed025b"></div>
 <br>
 
-## 👨‍👩‍👧‍👦 팀원소개 및 업무분담
-<div align="center"><img src="https://github.com/eunjung15/backup_semipj2/assets/120345380/0cf34ae2-8fae-4a09-9cdb-473144c139b6"></div>
-<br>
+
+https://github.com/eunjung15/hotel_pj2/assets/135147602/d8fae878-b657-4e07-ae06-7598306c41b9
+
+
 
 
